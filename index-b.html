@@ -6,10 +6,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 /* ===== HOME (index.html) — one-page landing. Reads content/settings.js, shows.js, about.js =====
-   Video backdrop in black & grey, large name, three columns: about / shows / highlights. */
+   Video backdrop in full colour, large name, three columns: about / shows / highlights. */
 :root{
   --bg:#121212;                       /* charcoal behind everything */
-  --veil:rgba(14,14,14,.58);          /* <- darkness over the video: raise for calmer, lower to see more video */
+  --veil:rgba(14,14,14,.42);          /* <- darkness over the video: raise for calmer, lower to see more video */
   --fg:#ebe8e2; --mute:rgba(235,232,226,.62); --line:rgba(235,232,226,.28);
   --sans:"Space Grotesk",system-ui,sans-serif;
   --mono:"Space Mono",ui-monospace,Menlo,monospace;
@@ -28,7 +28,7 @@ a:hover{text-decoration-thickness:2px}
 .bg .thumb,.bg iframe{position:absolute;top:50%;left:50%;border:0;
   width:100vw;height:56.25vw;min-height:100vh;min-width:177.78vh;
   transform:translate(-50%,-50%) scale(1.15);          /* overscan hides YouTube edge UI */
-  filter:grayscale(1) contrast(1.05) brightness(.9)}
+  filter:saturate(1.1)}   /* full colour (version B) */
 .bg .thumb{background:center/cover no-repeat}
 .veil{position:fixed;inset:0;z-index:-1;pointer-events:none;
   background:radial-gradient(ellipse 120% 90% at 50% 40%,transparent 30%,rgba(0,0,0,.45) 100%),var(--veil)}
