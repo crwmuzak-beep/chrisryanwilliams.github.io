@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Chris Ryan Williams — artist and musician, Brooklyn NY. Shows, highlights, contact.">
+<title>Chris Ryan Williams</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ===== HOME (index.html) — one-page landing. Reads content/settings.js, shows.js, about.js =====
+   Video backdrop in black & grey, large name, three columns: about / shows / highlights. */
+:root{
+  --bg:#121212;                       /* charcoal behind everything */
+  --veil:rgba(14,14,14,.58);          /* <- darkness over the video: raise for calmer, lower to see more video */
+  --fg:#ebe8e2; --mute:rgba(235,232,226,.62); --line:rgba(235,232,226,.28);
+  --sans:"Space Grotesk",system-ui,sans-serif;
+  --mono:"Space Mono",ui-monospace,Menlo,monospace;
+  --gut:clamp(16px,2vw,36px);
+}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{margin:0;color:var(--fg);background:transparent;font:400 17px/1.4 var(--sans);
+  -webkit-font-smoothing:antialiased;text-shadow:0 1px 14px rgba(0,0,0,.35)}
+a{color:inherit;text-decoration-thickness:1px;text-underline-offset:.18em}
+a:hover{text-decoration-thickness:2px}
+::selection{background:var(--fg);color:var(--bg)}
+
+/* ---------- backdrop: black & white video under a charcoal veil ---------- */
+.bg{position:fixed;inset:0;z-index:-2;overflow:hidden;pointer-events:none;background:var(--bg)}
+.bg .thumb,.bg iframe{position:absolute;top:50%;left:50%;border:0;
+  width:100vw;height:56.25vw;min-height:100vh;min-width:177.78vh;
+  transform:translate(-50%,-50%) scale(1.15);          /* overscan hides YouTube edge UI */
+  filter:grayscale(1) contrast(1.05) brightness(.9)}
+.bg .thumb{background:center/cover no-repeat}
+.veil{position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(ellipse 120% 90% at 50% 40%,transparent 30%,rgba(0,0,0,.45) 100%),var(--veil)}
+
+/* ---------- name ---------- */
+.name{margin:0;padding:calc(var(--gut)*.8) var(--gut) 0;font:700 clamp(3.2rem,10.2vw,13rem)/.86 var(--sans);
+  letter-spacing:-.045em}
+.name span{display:block}
+
+/* ---------- three columns ---------- */
+.grid{display:grid;grid-template-columns:1.15fr 1fr 1fr;gap:calc(var(--gut)*1.4);padding:clamp(28px,4vw,64px) var(--gut) var(--gut);align-items:start}
+h2{font:400 .78rem/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--mute);
+  margin:0 0 1.1rem;padding-bottom:.7rem;border-bottom:1px solid var(--line)}
+h2 i{font-style:normal;color:var(--fg);margin-right:.8em}
+
+/* about */
+.bio p{margin:0;font-size:clamp(1.3rem,1.95vw,2.25rem);line-height:1.16;font-weight:400;letter-spacing:-.015em}
+.bio p b{font-weight:600}
+.bio .more{display:none}
+.bio.open .more{display:block}
+.bio .more p{font-size:clamp(1rem,1.1vw,1.2rem);line-height:1.5;color:var(--mute);margin-top:1em;letter-spacing:0}
+.toggle{margin-top:1.3rem;background:none;color:var(--fg);border:1px solid var(--line);font:400 .74rem var(--mono);
+  letter-spacing:.12em;text-transform:uppercase;padding:.6em .9em;cursor:pointer;text-shadow:none}
+.toggle:hover{border-color:var(--fg);background:var(--fg);color:var(--bg)}
+
+/* shows: mono date column + title */
+.shows ol{list-style:none;margin:0;padding:0}
+.shows li{display:grid;grid-template-columns:5.2rem 1fr;gap:.2rem .9rem;padding:.75rem 0;border-bottom:1px solid var(--line)}
+.shows li:first-child{padding-top:0}
+.date{font:400 .78rem/1.9 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--mute);white-space:nowrap}
+.shows .t{font-size:clamp(1.05rem,1.3vw,1.45rem);line-height:1.15;font-weight:500;letter-spacing:-.01em}
+.shows .t a{text-decoration:none}
+.shows .t a:hover{text-decoration:underline}
+.shows .v{grid-column:2;font-size:.92rem;color:var(--mute)}
+.all{display:inline-block;margin-top:1.1rem;font:400 .74rem var(--mono);letter-spacing:.12em;text-transform:uppercase}
+
+/* highlights */
+.hl ul{list-style:none;margin:0;padding:0}
+.hl li{font-size:clamp(1.02rem,1.22vw,1.35rem);line-height:1.2;font-weight:500;letter-spacing:-.01em;padding:0 0 .9rem;margin:0 0 .9rem;border-bottom:1px solid var(--line)}
+.hl li:last-child{border-bottom:0;margin-bottom:0}
+.hl small{display:block;font-size:.76em;line-height:1.4;margin-top:.3em;font-weight:400;color:var(--mute);letter-spacing:0}
+
+/* ---------- contact strip ---------- */
+footer{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.8rem 2rem;
+  border-top:1px solid var(--line);margin:calc(var(--gut)*.6) var(--gut) 0;padding:1.1rem 0 1.8rem}
+.mail{font-size:clamp(1.4rem,2.4vw,2.8rem);font-weight:500;letter-spacing:-.025em;line-height:1;text-decoration:none}
+.mail:hover{text-decoration:underline}
+.links{display:flex;flex-wrap:wrap;gap:.4rem 1.6rem;font:400 .8rem var(--mono);letter-spacing:.1em;text-transform:uppercase}
+.links a{text-decoration:none;color:var(--mute)} .links a:hover{color:var(--fg)}
+.snd{font:400 .74rem var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--fg);background:none;
+  border:1px solid var(--line);padding:.6em .9em;cursor:pointer;text-shadow:none}
+.snd:hover{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.snd::before{content:"";display:inline-block;width:.5em;height:.5em;border-radius:50%;background:var(--mute);margin-right:.6em;vertical-align:.05em}
+.snd.on::before{background:#e8e3d6;box-shadow:0 0 8px #e8e3d6}
+
+/* ---------- smaller screens ---------- */
+@media (max-width:1100px){
+  .grid{grid-template-columns:1fr 1fr}
+  .bio{grid-column:1/-1}
+}
+@media (max-width:680px){
+  .grid{grid-template-columns:1fr;gap:2.6rem}
+  .name{font-size:15.5vw;line-height:.9}
+  footer{flex-direction:column;align-items:flex-start}
+}
+/* video fades in only once it is actually playing (hides YouTube's loading spinner / title flash) */
+.bg iframe{opacity:0;transition:opacity 1.2s ease}
+.bg.playing iframe{opacity:1}
+.ctl{display:flex;gap:.6rem}
+</style></head>
+<body>
+<div class="bg" id="bg"><div class="thumb" id="thumb"></div><div id="yt"></div></div><div class="veil"></div>
+
+<h1 class="name" id="name"></h1>
+
+<main class="grid">
+  <section aria-labelledby="ah"><h2 id="ah"><i>01</i>About</h2><div class="bio" id="bio"></div></section>
+  <section class="shows" aria-labelledby="sh"><h2><i>02</i><span id="sh">Shows</span></h2><ol id="shows"></ol><a class="all" href="shows.html">All shows →</a></section>
+  <section class="hl" aria-labelledby="hh"><h2 id="hh"><i>03</i>Highlights</h2><ul id="hl"></ul></section>
+</main>
+
+<footer>
+  <a class="mail" id="mail"></a>
+  <nav class="links" id="links" aria-label="Elsewhere"></nav>
+  <div class="ctl"><button class="snd" id="pp" type="button">Pause</button><button class="snd" id="snd" type="button">Sound off</button></div>
+</footer>
+
+<script src="settings.js"></script>
+<script src="shows.js"></script>
+<script src="about.js"></script>
+<script>
+(function(){
+  var SITE=window.SITE||{}, VIDEO="NZm5XphwuxA";   // <- YouTube ID of the backdrop video
+  var h=function(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})};
+  var $=function(id){return document.getElementById(id)};
+
+  /* name: last word on its own line */
+  var words=(SITE.name||"").trim().split(/\s+/), last=words.pop();
+  $("name").innerHTML=(words.length?'<span>'+h(words.join(" "))+'</span>':'')+'<span>'+h(last)+'</span>';
+  document.title=SITE.name||"";
+
+  /* bio: first paragraph big, the rest behind "Read more" */
+  var about=SITE.about||[], first=h(about[0]||"");
+  if(SITE.name) first=first.replace(h(SITE.name),'<b>'+h(SITE.name)+'</b>');
+  $("bio").innerHTML='<p>'+first+'</p>'+(about.length>1?
+    '<div class="more">'+about.slice(1).map(function(p){return '<p>'+h(p)+'</p>'}).join("")+'</div><button class="toggle" type="button" aria-expanded="false">Read more</button>':'');
+  var tg=$("bio").querySelector(".toggle");
+  if(tg) tg.onclick=function(){var o=$("bio").classList.toggle("open");tg.textContent=o?"Less":"Read more";tg.setAttribute("aria-expanded",o)};
+
+  /* shows: upcoming first; if none, the most recent ones */
+  var today=new Date(); today.setHours(0,0,0,0);
+  var all=(SITE.shows||[]).slice().sort(function(a,b){return a.date<b.date?1:-1});
+  var d=function(s){var p=s.date.split("-");return new Date(+p[0],p[1]-1,+p[2])};
+  var up=all.filter(function(s){return d(s)>=today}).reverse();
+  var list=up.length?up.slice(0,6):all.slice(0,6);
+  $("sh").textContent=up.length?"Upcoming":"Recent";
+  var M=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  $("shows").innerHTML=list.map(function(s){
+    var dt=d(s), badge=M[dt.getMonth()]+" "+dt.getDate()+(dt.getFullYear()!==today.getFullYear()?" ’"+String(dt.getFullYear()).slice(2):"");
+    var t=h(s.title); if(s.url) t='<a href="'+h(s.url)+'" target="_blank" rel="noopener">'+t+'</a>';
+    return '<li><span class="date">'+badge+'</span><div class="t">'+t+'</div><span class="v">'+h([s.venue,s.city].filter(Boolean).join(", "))+'</span></li>';
+  }).join("");
+
+  /* highlights: "Label: a; b" and "Title (Label, Year): note" → underlined head + small line */
+  $("hl").innerHTML=(SITE.accomplishments||[]).map(function(a){
+    var i=a.indexOf("): "), m=a.match(/^(Commissions|Residencies|Fellowships & grants|Fellowships|Grants|Education|Teaching|Awards|Recordings):\s*/i);
+    var li=function(head,rest){return '<li>'+h(head)+'<small>'+h(rest.replace(/;\s*/g," · "))+'</small></li>'};
+    if(i>-1) return li(a.slice(0,i+1),a.slice(i+3));
+    if(m) return li(m[1],a.slice(m[0].length));
+    return '<li>'+h(a)+'</li>';
+  }).join("");
+
+  /* contact */
+  if(SITE.email){$("mail").href="mailto:"+SITE.email;$("mail").textContent=SITE.email}
+  $("links").innerHTML=(SITE.social||[]).map(function(s){return '<a href="'+h(s.url)+'" target="_blank" rel="noopener">'+h(s.label)+'</a>'}).join("");
+
+  /* backdrop video: muted autoplay loop via the YouTube player API.
+     Browsers only allow autoplay when muted; if one still blocks it (e.g. iPhone Low Power Mode),
+     the video starts on the visitor's first tap/click/key press. */
+  $("thumb").style.backgroundImage="url(https://i.ytimg.com/vi/"+VIDEO+"/maxresdefault.jpg)";
+  var player=null, playing=false, paused=false, pp=$("pp"), snd=$("snd");
+  window.onYouTubeIframeAPIReady=function(){
+    player=new YT.Player("yt",{
+      videoId:VIDEO, host:"https://www.youtube-nocookie.com",
+      playerVars:{autoplay:1,mute:1,loop:1,playlist:VIDEO,controls:0,playsinline:1,rel:0,
+                  modestbranding:1,disablekb:1,iv_load_policy:3,fs:0},
+      events:{
+        onReady:function(e){ var f=e.target.getIframe(); f.setAttribute("tabindex","-1"); f.setAttribute("aria-hidden","true");
+                             e.target.mute(); e.target.playVideo(); },
+        onStateChange:function(e){
+          if(e.data===YT.PlayerState.PLAYING){ playing=true; $("bg").classList.add("playing"); }
+          if(e.data===YT.PlayerState.ENDED){ player.seekTo(0); player.playVideo(); }   // seamless loop
+        }
+      }
+    });
+  };
+  var api=document.createElement("script"); api.src="https://www.youtube.com/iframe_api"; document.head.appendChild(api);
+
+  /* fallback: if autoplay was blocked, start on the first interaction */
+  var kick=function(){ if(player&&player.playVideo&&!playing&&!paused){ player.mute(); player.playVideo(); } };
+  ["pointerdown","touchend","keydown"].forEach(function(ev){ document.addEventListener(ev,kick,{passive:true}); });
+  setTimeout(kick,1500);
+
+  pp.onclick=function(){
+    if(!player||!player.playVideo) return;
+    paused=!paused;
+    if(paused){ player.pauseVideo(); } else { player.playVideo(); }
+    pp.textContent=paused?"Play":"Pause";
+  };
+  snd.onclick=function(){
+    if(!player||!player.isMuted) return;
+    var m=player.isMuted();
+    if(m){ player.unMute(); player.setVolume(100); if(!playing||paused){ paused=false; pp.textContent="Pause"; player.playVideo(); } }
+    else { player.mute(); }
+    snd.textContent=m?"Sound on":"Sound off"; snd.classList.toggle("on",m);
+  };
+
+})();
+</script>
+</body></html>
