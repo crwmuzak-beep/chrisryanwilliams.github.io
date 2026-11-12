@@ -30,6 +30,10 @@ a:hover{text-decoration-thickness:2px}
   transform:translate(-50%,-50%) scale(1.15);          /* overscan hides YouTube edge UI */
   filter:saturate(1.1)}   /* full colour (version B) */
 .bg .thumb{background:center/cover no-repeat}
+/* render the player at 2x size, then shrink it: YouTube picks the stream quality from the player's
+   pixel size, so a bigger player asks for 1080p+ instead of 480/720p */
+.bg iframe{width:200vw;height:112.5vw;min-height:200vh;min-width:355.56vh;
+  transform:translate(-50%,-50%) scale(.575)}
 .veil{position:fixed;inset:0;z-index:-1;pointer-events:none;
   background:radial-gradient(ellipse 120% 90% at 50% 40%,transparent 30%,rgba(0,0,0,.45) 100%),var(--veil)}
 
