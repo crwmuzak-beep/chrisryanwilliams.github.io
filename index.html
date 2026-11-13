@@ -30,6 +30,10 @@ a:hover{text-decoration-thickness:2px}
   transform:translate(-50%,-50%) scale(1.15);          /* overscan hides YouTube edge UI */
   filter:grayscale(1) contrast(1.05) brightness(.9)}
 .bg .thumb{background:center/cover no-repeat}
+/* render the player at 2x size, then shrink it: YouTube picks the stream quality from the player's
+   pixel size, so a bigger player asks for 1080p+ instead of 480/720p */
+.bg iframe{width:200vw;height:112.5vw;min-height:200vh;min-width:355.56vh;
+  transform:translate(-50%,-50%) scale(.575)}
 .veil{position:fixed;inset:0;z-index:-1;pointer-events:none;
   background:radial-gradient(ellipse 120% 90% at 50% 40%,transparent 30%,rgba(0,0,0,.45) 100%),var(--veil)}
 
@@ -67,6 +71,7 @@ h2 i{font-style:normal;color:var(--fg);margin-right:.8em}
 
 /* highlights */
 .hl ul{list-style:none;margin:0;padding:0}
+.hl li a{text-decoration-color:var(--line)} .hl li a:hover{text-decoration-color:var(--fg)}
 .hl li{font-size:clamp(1.02rem,1.22vw,1.35rem);line-height:1.2;font-weight:500;letter-spacing:-.01em;padding:0 0 .9rem;margin:0 0 .9rem;border-bottom:1px solid var(--line)}
 .hl li:last-child{border-bottom:0;margin-bottom:0}
 .hl small{display:block;font-size:.76em;line-height:1.4;margin-top:.3em;font-weight:400;color:var(--mute);letter-spacing:0}
@@ -105,9 +110,9 @@ footer{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-betw
 <h1 class="name" id="name"></h1>
 
 <main class="grid">
-  <section aria-labelledby="ah"><h2 id="ah"><i>01</i>About</h2><div class="bio" id="bio"></div></section>
+  <section aria-labelledby="ah"><h2 id="ah"><i>01</i>Who</h2><div class="bio" id="bio"></div></section>
   <section class="shows" aria-labelledby="sh"><h2><i>02</i><span id="sh">Shows</span></h2><ol id="shows"></ol><a class="all" href="shows.html">All shows →</a></section>
-  <section class="hl" aria-labelledby="hh"><h2 id="hh"><i>03</i>Highlights</h2><ul id="hl"></ul></section>
+  <section class="hl" aria-labelledby="hh"><h2 id="hh"><i>03</i>News</h2><ul id="hl"></ul></section>
 </main>
 
 <footer>
@@ -144,7 +149,7 @@ footer{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-betw
   var d=function(s){var p=s.date.split("-");return new Date(+p[0],p[1]-1,+p[2])};
   var up=all.filter(function(s){return d(s)>=today}).reverse();
   var list=up.length?up.slice(0,6):all.slice(0,6);
-  $("sh").textContent=up.length?"Upcoming":"Recent";
+  $("sh").textContent="Performances";
   var M=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
   $("shows").innerHTML=list.map(function(s){
     var dt=d(s), badge=M[dt.getMonth()]+" "+dt.getDate()+(dt.getFullYear()!==today.getFullYear()?" ’"+String(dt.getFullYear()).slice(2):"");
@@ -153,12 +158,14 @@ footer{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-betw
   }).join("");
 
   /* highlights: "Label: a; b" and "Title (Label, Year): note" → underlined head + small line */
-  $("hl").innerHTML=(SITE.accomplishments||[]).map(function(a){
+  $("hl").innerHTML=(SITE.accomplishments||[]).map(function(x){
+    var a=typeof x==="string"?x:(x.text||""), url=typeof x==="string"?"":(x.url||"");
+    var head=function(t){return url?'<a href="'+h(url)+'" target="_blank" rel="noopener">'+h(t)+'</a>':h(t)};
     var i=a.indexOf("): "), m=a.match(/^(Commissions|Residencies|Fellowships & grants|Fellowships|Grants|Education|Teaching|Awards|Recordings):\s*/i);
-    var li=function(head,rest){return '<li>'+h(head)+'<small>'+h(rest.replace(/;\s*/g," · "))+'</small></li>'};
+    var li=function(hd,rest){return '<li>'+head(hd)+'<small>'+h(rest.replace(/;\s*/g," · "))+'</small></li>'};
     if(i>-1) return li(a.slice(0,i+1),a.slice(i+3));
     if(m) return li(m[1],a.slice(m[0].length));
-    return '<li>'+h(a)+'</li>';
+    return '<li>'+head(a)+'</li>';
   }).join("");
 
   /* contact */

@@ -10,13 +10,19 @@ SITE.about = [   // each string = one paragraph
 
   "Williams holds an MFA in Composer/Performer from California Institute of the Arts and a BFA in Jazz Performance from the University of Nevada, Reno. He has taught and lectured at CalArts, The New School, Longy School of Music of Bard College, UC Irvine, Stanford University, Brooklyn College, and Pioneer Works, and is a facilitator with the international music program OneBeat."
 ];
-SITE.accomplishments = [   // "Selected highlights" list; [] to hide
-  "Odu: Vibration II (AKP Recordings, 2025): named one of NPR’s Best New Albums; praised by Pitchfork",
-  "Live (COW Recording, 2021): praised by The Quietus and Jazz Right Now",
+SITE.accomplishments = [   // "News" on the home page + "Selected highlights" on about.html; [] to hide
+  // Each entry is "text", or {text: "...", url: "..."} to make it a link.
+  {text: "Odu: Vibration II (AKP Recordings, 2025): named one of NPR’s Best New Albums; praised by Pitchfork",
+   url: "https://chriswilliamstpt.bandcamp.com/album/odu-vibration-ii"},
+  {text: "Enthalpy (Outside Time, 2026): new LP with Ka Baird",
+   url: "https://kabaird.bandcamp.com/album/enthalpy"},
+  {text: "STARK PHENOMENA (OFNOT, 2025): HxH, with cellist Lester St. Louis",
+   url: "https://hxhexpanse.bandcamp.com/album/stark-phenomena"},
   "Presented at the Venice Biennale, MoMA PS1, Carnegie Hall, Walt Disney Concert Hall, and The Royal Danish Playhouse",
+  {text: "Inaugural Artist Diploma candidate, New England Conservatory",
+   url: "https://necmusic.edu/about/news/necs-prestigious-institute-for-concert-artists-welcomes-new-class/"},
   "Commissions: International Contemporary Ensemble; American Composers Forum (ACF CREATE, Jerome Foundation Fund, 2023); MATA Festival (2022); Pan Afrikan Peoples Arkestra; WasteLAnd",
   "Residencies: Bemis Center for Contemporary Arts (2025); Pioneer Works (2023); Kennedy Center, The REACH, with FoundSoundNation (2022); Goethe-Institut, virtual partner (2021)",
   "Fellowships & grants: Harvestworks Technology Immersion Program (2024); Hermitage Artist Retreat (2024); NYFA City Artist Corps (2021); Foundation for Contemporary Arts (2019)",
-  "Inaugural Artist Diploma candidate, New England Conservatory",
   "HxH, an ongoing duo with cellist Lester St. Louis"
 ];

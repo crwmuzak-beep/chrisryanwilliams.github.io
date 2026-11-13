@@ -35,7 +35,7 @@ const R = {
   },
   about() {
     return `<h1>About</h1>${SITE.about.map(p => `<p>${h(p)}</p>`).join("")}` +
-      (SITE.accomplishments.length ? `<h2>Selected highlights</h2><ul>${SITE.accomplishments.map(a => `<li>${h(a)}</li>`).join("")}</ul>` : "");
+      (SITE.accomplishments.length ? `<h2>Selected highlights</h2><ul>${SITE.accomplishments.map(a => `<li>${typeof a === "string" ? h(a) : link(a.url, a.text)}</li>`).join("")}</ul>` : "");
   },
   albums() {
     return `<h1>Albums</h1>` + SITE.albums.map(a => `<div class="item"><strong>${h(a.title)}</strong> <span class="meta">${h(a.year)}</span>
