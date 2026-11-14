@@ -23,17 +23,11 @@ a{color:inherit;text-decoration-thickness:1px;text-underline-offset:.18em}
 a:hover{text-decoration-thickness:2px}
 ::selection{background:var(--fg);color:var(--bg)}
 
-/* ---------- backdrop: black & white video under a charcoal veil ---------- */
-.bg{position:fixed;inset:0;z-index:-2;overflow:hidden;pointer-events:none;background:var(--bg)}
-.bg .thumb,.bg iframe{position:absolute;top:50%;left:50%;border:0;
-  width:100vw;height:56.25vw;min-height:100vh;min-width:177.78vh;
-  transform:translate(-50%,-50%) scale(1.15);          /* overscan hides YouTube edge UI */
-  filter:saturate(1.1)}   /* full colour (version B) */
-.bg .thumb{background:center/cover no-repeat}
-/* render the player at 2x size, then shrink it: YouTube picks the stream quality from the player's
-   pixel size, so a bigger player asks for 1080p+ instead of 480/720p */
-.bg iframe{width:200vw;height:112.5vw;min-height:200vh;min-width:355.56vh;
-  transform:translate(-50%,-50%) scale(.575)}
+/* ---------- backdrop: your own video file (background.mp4) under a charcoal veil ---------- */
+.bg{position:fixed;inset:0;z-index:-2;overflow:hidden;pointer-events:none;background:var(--bg) url(background.jpg) center/cover no-repeat}
+.bg video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(1.04);
+  filter:saturate(1.1);opacity:0;transition:opacity 1s ease}
+.bg.playing video{opacity:1}   /* fades in once playing; until then the still image (background.jpg) shows */
 .veil{position:fixed;inset:0;z-index:-1;pointer-events:none;
   background:radial-gradient(ellipse 120% 90% at 50% 40%,transparent 30%,rgba(0,0,0,.45) 100%),var(--veil)}
 
@@ -117,12 +111,10 @@ footer{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-betw
   footer{flex-direction:column;align-items:flex-start}
 }
 /* video fades in only once it is actually playing (hides YouTube's loading spinner / title flash) */
-.bg iframe{opacity:0;transition:opacity 1.2s ease}
-.bg.playing iframe{opacity:1}
 .ctl{display:flex;gap:.6rem}
 </style></head>
 <body>
-<div class="bg" id="bg"><div class="thumb" id="thumb"></div><div id="yt"></div></div><div class="veil"></div>
+<div class="bg" id="bg"><video id="vid" autoplay muted loop playsinline preload="auto" poster="background.jpg" disablepictureinpicture disableremoteplayback aria-hidden="true" tabindex="-1"><source src="background.mp4" type="video/mp4"></video></div><div class="veil"></div>
 
 <h1 class="name" id="name"></h1>
 
@@ -143,7 +135,7 @@ footer{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-betw
 <script src="about.js"></script>
 <script>
 (function(){
-  var SITE=window.SITE||{}, VIDEO="NZm5XphwuxA";   // <- YouTube ID of the backdrop video
+  var SITE=window.SITE||{};   // backdrop video = background.mp4 (still image = background.jpg), next to this file
   var h=function(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})};
   var $=function(id){return document.getElementById(id)};
 
@@ -211,44 +203,24 @@ footer{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-betw
   if(kitUrl){$("kit").href=kitUrl;$("kit").hidden=false}
   $("links").innerHTML=(SITE.social||[]).map(function(s){return '<a href="'+h(s.url)+'" target="_blank" rel="noopener">'+h(s.label)+'</a>'}).join("");
 
-  /* backdrop video: muted autoplay loop via the YouTube player API.
-     Browsers only allow autoplay when muted; if one still blocks it (e.g. iPhone Low Power Mode),
-     the video starts on the visitor's first tap/click/key press. */
-  $("thumb").style.backgroundImage="url(https://i.ytimg.com/vi/"+VIDEO+"/maxresdefault.jpg)";
-  var player=null, playing=false, paused=false, pp=$("pp"), snd=$("snd");
-  window.onYouTubeIframeAPIReady=function(){
-    player=new YT.Player("yt",{
-      videoId:VIDEO, host:"https://www.youtube-nocookie.com",
-      playerVars:{autoplay:1,mute:1,loop:1,playlist:VIDEO,controls:0,playsinline:1,rel:0,
-                  modestbranding:1,disablekb:1,iv_load_policy:3,fs:0},
-      events:{
-        onReady:function(e){ var f=e.target.getIframe(); f.setAttribute("tabindex","-1"); f.setAttribute("aria-hidden","true");
-                             e.target.mute(); e.target.playVideo(); },
-        onStateChange:function(e){
-          if(e.data===YT.PlayerState.PLAYING){ playing=true; $("bg").classList.add("playing"); }
-          if(e.data===YT.PlayerState.ENDED){ player.seekTo(0); player.playVideo(); }   // seamless loop
-        }
-      }
-    });
-  };
-  var api=document.createElement("script"); api.src="https://www.youtube.com/iframe_api"; document.head.appendChild(api);
-
-  /* fallback: if autoplay was blocked, start on the first interaction */
-  var kick=function(){ if(player&&player.playVideo&&!playing&&!paused){ player.mute(); player.playVideo(); } };
+  /* backdrop video: plain muted looping video file — no YouTube, so no play buttons or controls.
+     If a browser blocks autoplay (e.g. iPhone Low Power Mode), the still image shows and the video
+     starts on the visitor's first tap/click/key press. */
+  var v=$("vid"), bg=$("bg"), pp=$("pp"), snd=$("snd"), paused=false;
+  v.muted=true;
+  v.addEventListener("playing",function(){ bg.classList.add("playing"); });
+  var kick=function(){ if(!paused&&v.paused){ var p=v.play(); if(p&&p.catch) p.catch(function(){}); } };
   ["pointerdown","touchend","keydown"].forEach(function(ev){ document.addEventListener(ev,kick,{passive:true}); });
-  setTimeout(kick,1500);
+  document.addEventListener("visibilitychange",function(){ if(!document.hidden) kick(); });
+  kick(); setTimeout(kick,1500);
 
   pp.onclick=function(){
-    if(!player||!player.playVideo) return;
     paused=!paused;
-    if(paused){ player.pauseVideo(); } else { player.playVideo(); }
+    if(paused){ v.pause(); } else { kick(); }
     pp.textContent=paused?"Play":"Pause";
   };
   snd.onclick=function(){
-    if(!player||!player.isMuted) return;
-    var m=player.isMuted();
-    if(m){ player.unMute(); player.setVolume(100); if(!playing||paused){ paused=false; pp.textContent="Pause"; player.playVideo(); } }
-    else { player.mute(); }
+    var m=v.muted; v.muted=!m; if(m){ v.volume=1; if(paused){ paused=false; pp.textContent="Pause"; } kick(); }
     snd.textContent=m?"Sound on":"Sound off"; snd.classList.toggle("on",m);
   };
 
