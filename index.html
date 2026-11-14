@@ -77,7 +77,17 @@ h2 i{font-style:normal;color:var(--fg);margin-right:.8em}
 .hl ul{list-style:none;margin:0;padding:0}
 .hl li a{text-decoration-color:var(--line)} .hl li a:hover{text-decoration-color:var(--fg)}
 .hl li{font-size:clamp(1.02rem,1.22vw,1.35rem);line-height:1.2;font-weight:500;letter-spacing:-.01em;padding:0 0 .9rem;margin:0 0 .9rem;border-bottom:1px solid var(--line)}
-.hl li:last-child{border-bottom:0;margin-bottom:0}
+#hlRest li:last-child{border-bottom:0;margin-bottom:0}
+/* scrolling news feed: everything above "Commissions" */
+.feed{max-height:clamp(13rem,34vh,22rem);overflow-y:auto;overscroll-behavior:contain;margin:0 0 .9rem;padding-right:.6rem;
+  border-bottom:1px solid var(--line);scrollbar-width:thin;scrollbar-color:var(--line) transparent}
+.feed::-webkit-scrollbar{width:4px}.feed::-webkit-scrollbar-thumb{background:var(--line)}
+.feed.scrolls{-webkit-mask-image:linear-gradient(#000 78%,transparent);mask-image:linear-gradient(#000 78%,transparent)}
+.feed.scrolls.end{-webkit-mask-image:none;mask-image:none}
+.feed li:last-child{border-bottom:0}
+.feedhint{display:none;font:400 .68rem var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--mute);margin:-.5rem 0 .9rem}
+.feedhint.show{display:block}
+.feed:empty,.feed:has(ul:empty){display:none}
 .hl small{display:block;font-size:.76em;line-height:1.4;margin-top:.3em;font-weight:400;color:var(--mute);letter-spacing:0}
 
 /* ---------- contact strip ---------- */
@@ -85,6 +95,9 @@ footer{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-betw
   border-top:1px solid var(--line);margin:calc(var(--gut)*.6) var(--gut) 0;padding:1.1rem 0 1.8rem}
 .mail{font-size:clamp(1.4rem,2.4vw,2.8rem);font-weight:500;letter-spacing:-.025em;line-height:1;text-decoration:none}
 .mail:hover{text-decoration:underline}
+.contact{display:flex;flex-wrap:wrap;align-items:baseline;gap:.6rem 1.4rem}
+.kit{font:400 .8rem var(--mono);letter-spacing:.1em;text-transform:uppercase;border:1px solid var(--line);padding:.55em .8em;text-decoration:none;text-shadow:none}
+.kit:hover{background:var(--fg);color:var(--bg);border-color:var(--fg)}
 .links{display:flex;flex-wrap:wrap;gap:.4rem 1.6rem;font:400 .8rem var(--mono);letter-spacing:.1em;text-transform:uppercase}
 .links a{text-decoration:none;color:var(--mute)} .links a:hover{color:var(--fg)}
 .snd{font:400 .74rem var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--fg);background:none;
@@ -116,11 +129,11 @@ footer{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-betw
 <main class="grid">
   <section aria-labelledby="ah"><h2 id="ah"><i>01</i>Who</h2><div class="bio" id="bio"></div></section>
   <section class="shows" id="showsWrap" aria-labelledby="sh"><h2><i>02</i><span id="sh">Performances</span></h2><ol id="shows"></ol><ol class="more" id="showsMore"></ol><button class="toggle" id="moreShows" type="button" aria-expanded="false">More performances</button></section>
-  <section class="hl" aria-labelledby="hh"><h2 id="hh"><i>03</i>News</h2><ul id="hl"></ul></section>
+  <section class="hl" aria-labelledby="hh"><h2 id="hh"><i>03</i>News</h2><ul id="hl"></ul><div class="feed" id="feed"><ul id="hlFeed"></ul></div><span class="feedhint" id="feedHint">scroll for more ↓</span><ul id="hlRest"></ul></section>
 </main>
 
 <footer>
-  <a class="mail" id="mail"></a>
+  <div class="contact"><a class="mail" id="mail"></a><a class="kit" id="kit" target="_blank" rel="noopener" hidden>Press Kit ↗</a></div>
   <nav class="links" id="links" aria-label="Elsewhere"></nav>
   <div class="ctl"><button class="snd" id="pp" type="button">Pause</button><button class="snd" id="snd" type="button">Sound off</button></div>
 </footer>
@@ -167,8 +180,8 @@ footer{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-betw
   if(all.length<=SHOW) mb.remove();
   else mb.onclick=function(){var o=$("showsWrap").classList.toggle("open");mb.textContent=o?"Fewer":"More performances";mb.setAttribute("aria-expanded",o)};
 
-  /* highlights: "Label: a; b" and "Title (Label, Year): note" → underlined head + small line */
-  $("hl").innerHTML=(SITE.accomplishments||[]).map(function(x){
+  /* news: scrolling feed (everything above "Commissions") · fixed rest (Commissions and below) */
+  var item=function(x){
     var a=typeof x==="string"?x:(x.text||""), url=typeof x==="string"?"":(x.url||"");
     var head=function(t){return url?'<a href="'+h(url)+'" target="_blank" rel="noopener">'+h(t)+'</a>':h(t)};
     var i=a.indexOf("): "), m=a.match(/^(Commissions|Residencies|Fellowships & grants|Fellowships|Grants|Education|Teaching|Awards|Recordings):\s*/i);
@@ -176,10 +189,25 @@ footer{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-betw
     if(i>-1) return li(a.slice(0,i+1),a.slice(i+3));
     if(m) return li(m[1],a.slice(m[0].length));
     return '<li>'+head(a)+'</li>';
-  }).join("");
+  };
+  var acc=SITE.accomplishments||[], txt=function(x){return typeof x==="string"?x:(x.text||"")};
+  var fs=0,   // the feed starts at the top of News
+      fe=acc.findIndex(function(x){return /^Commissions:/i.test(txt(x))});
+  if(fe<0) fe=acc.length;
+  $("hl").innerHTML=acc.slice(0,fs).map(item).join("");
+  $("hlFeed").innerHTML=acc.slice(fs,fe).map(item).join("");
+  $("hlRest").innerHTML=acc.slice(fe).map(item).join("");
+  var feed=$("feed"), hint=$("feedHint");
+  var feedCheck=function(){
+    var over=feed.scrollHeight>feed.clientHeight+4, end=feed.scrollTop+feed.clientHeight>=feed.scrollHeight-4;
+    feed.classList.toggle("scrolls",over); feed.classList.toggle("end",over&&end); hint.classList.toggle("show",over&&!end);
+  };
+  feed.addEventListener("scroll",feedCheck,{passive:true}); window.addEventListener("resize",feedCheck);
+  if(document.fonts&&document.fonts.ready) document.fonts.ready.then(feedCheck); feedCheck();
 
   /* contact */
   if(SITE.email){$("mail").href="mailto:"+SITE.email;$("mail").textContent=SITE.email}
+  if(SITE.pressKit){$("kit").href=SITE.pressKit;$("kit").hidden=false}
   $("links").innerHTML=(SITE.social||[]).map(function(s){return '<a href="'+h(s.url)+'" target="_blank" rel="noopener">'+h(s.label)+'</a>'}).join("");
 
   /* backdrop video: muted autoplay loop via the YouTube player API.
