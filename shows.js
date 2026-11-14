@@ -1,7 +1,11 @@
 /* ===== SHOWS (shows.html + the home page index.html) =====
    One line per show. date = YYYY-MM-DD. The page sorts newest first automatically. */
 SITE.shows = [
+    {date: "2027-01-23", title: "New Music Circle: Chris Ryan Williams Vibration Trio", venue: "Schlafly Tap Room", city: "St. Louis, MO", url: "https://newmusiccircle.org/2026/07/06/chris-williams-vibration-trio/", note: "With Kalia Vandever & Patrick Shiroishi"},
+    {date: "2026-12-17", title: "Ka Baird & Chris Ryan Williams: \"Enthalpy\" record release", venue: "Roulette Intermedium", city: "Brooklyn, NY", url: "https://roulette.org/event/ka-baird-chris-ryan-williams-leila-bordreuil-luke-stewart/", note: "With Leila Bordreuil & Luke Stewart"},
+    {date: "2026-10-29", title: "HxH: an evening curated by 29speedway", venue: "TOKYO NODE", city: "Tokyo, Japan", url: "https://www.tokyoartbeat.com/en/events/-/Yoshirotten-Exhibition-Communication-with-the-Other-Side-Beyond-Earth/tokyo-node/2026-10-30", note: "With Dylan Henner · at YOSHIROTTEN's exhibition Transmissions with the Beyond"},
     {date: "2026-10-25", title: "Vibration Trio + Kalia Vandever", venue: "2220 Arts + Archives", city: "Los Angeles, CA", url: "https://dice.fm/event/bb2k2k-chris-ryan-williams-vibration-trio-kalia-vandever-25th-oct-2220-arts-archives-los-angeles-tickets", note: "Presented by 2220 Arts & Angel City Arts"},
+    {date: "2026-09-27", title: "Talk Low Music Festival: Chris Ryan Williams Vibration Trio", venue: "Woodward Theater", city: "Cincinnati, OH", url: "https://www.woodwardtheater.com/shows/talk-low-music-festival-maom-chris-ryan-williams-vibration-trio-ascension-day", note: "With múm & Ascension Day"},
     {date: "2026-09-19", title: "No Ordinary Festival: trio with Dimitra Kousteridou & Thodoris Ziarkas", venue: "Transcendance Art Space", city: "Thessaloniki, Greece", url: "https://noordinaryfestival.com/?page_id=46", note: ""},
     {date: "2026-09-18", title: "No Ordinary Festival: duo with Evi Nakou", venue: "Transcendance Art Space", city: "Thessaloniki, Greece", url: "https://noordinaryfestival.com/?page_id=46", note: ""},
     {date: "2026-09-17", title: "Chris Ryan Williams + Lukas De Clerck", venue: "Pilar (VUB)", city: "Brussels, Belgium", url: "", note: ""},
@@ -32,16 +36,24 @@ SITE.shows = [
     {date: "2025-06-07", title: "HxH at Pique Festival", venue: "Debaser", city: "Ottawa, ON", url: "", note: "With Lester St. Louis"},
     {date: "2025-06-05", title: "NO HAY BANDA | HxH", venue: "The Music Gallery", city: "Toronto, ON", url: "https://musicgallery.org/events/no-hay-banda-hxh/", note: ""},
     {date: "2025-05-19", title: "Lester St. Louis: TAR BACK CYCLIC", venue: "Roulette Intermedium", city: "Brooklyn, NY", url: "https://roulette.org/event/lester-st-louis/", note: "With Shamar Watt"},
+    {date: "2025-04-12", title: "HxH", venue: "Public Records", city: "Brooklyn, NY", url: "", note: "With Lester St. Louis"},
+    {date: "2025-04-02", title: "HxH", venue: "Pioneer Works", city: "Brooklyn, NY", url: "", note: "With Lester St. Louis"},
     {date: "2025-02-15", title: "HxH: Loop.max.infinite (premiere), presented by Lampo", venue: "Graham Foundation", city: "Chicago, IL", url: "https://lampo.org/archive/lester-st-louis-chris-williams-2025/", note: ""},
+    {date: "2025-02-11", title: "HxH: Stark Phenomena", venue: "Performance Space New York", city: "New York, NY", url: "https://performancespacenewyork.org/shows/stark-phenomena/", note: "With Lester St. Louis"},
     {date: "2025-01-19", title: "Ralph Lemon: In Proximity (Brass Band)", venue: "MoMA PS1", city: "Long Island City, NY", url: "https://www.momaps1.org/en/events/498-in-proximity", note: "With Bantu Al-Abu, Trae Crudup, Kalia Vandever"},
     {date: "2025-01-18", title: "Ralph Lemon: In Proximity (Brass Band)", venue: "MoMA PS1", city: "Long Island City, NY", url: "https://www.momaps1.org/en/events/498-in-proximity", note: "With Bantu Al-Abu, Trae Crudup, Kalia Vandever"},
     {date: "2025-01-16", title: "Ralph Lemon: In Proximity (US premiere, Brass Band)", venue: "MoMA PS1", city: "Long Island City, NY", url: "https://www.momaps1.org/en/events/498-in-proximity", note: "With Bantu Al-Abu, Trae Crudup, Kalia Vandever"},
     {date: "2025-01-11", title: "HxH: Winter Jazzfest Brooklyn Marathon", venue: "Union Pool", city: "Brooklyn, NY", url: "https://www.winterjazzfest.com/artists/hxh", note: ""},
+    {date: "2024-12-01", title: "HxH", venue: "HEART", city: "New York, NY", url: "", note: "With Lester St. Louis"},
     {date: "2024-09-22", title: "High Zero Festival: Sunday Set 1", venue: "Baltimore Theatre Project", city: "Baltimore, MD", url: "https://highzero.org/2024_site/schedule/", note: "With Che Davis, Thomas Florin, Bonnie Lander, Sam Newsome"},
     {date: "2024-09-20", title: "High Zero Festival: Night of Randomization", venue: "Baltimore Theatre Project", city: "Baltimore, MD", url: "https://highzero.org/2024_site/schedule/", note: ""},
     {date: "2024-09-19", title: "High Zero Festival: Thursday Set 1", venue: "Baltimore Theatre Project", city: "Baltimore, MD", url: "https://highzero.org/2024_site/schedule/", note: "With Darien Baiza, Bonnie Lander, Jamal Moore"},
     {date: "2024-08-11", title: "OPTION: Chris Williams & Trae Crudup", venue: "Experimental Sound Studio", city: "Chicago, IL", url: "https://thevisualist.org/2024/08/option-chris-williams-trae-crudup/", note: ""},
     {date: "2024-08-03", title: "HxH: Bang on a Can LOUD Weekend", venue: "MASS MoCA (Chalet)", city: "North Adams, MA", url: "https://bangonacan.org/loud-weekend-2024/", note: ""},
+    {date: "2024-07-16", title: "HxH", venue: "Microscope Gallery", city: "Brooklyn, NY", url: "", note: "With Lester St. Louis"},
+    {date: "2024-07-11", title: "HxH", venue: "Hosek Contemporary (MS Heimatland)", city: "Berlin, Germany", url: "", note: "With Lester St. Louis"},
+    {date: "2024-06-22", title: "HxH with Speaker Music", venue: "Studio 34", city: "Philadelphia, PA", url: "", note: ""},
+    {date: "2024-06-20", title: "HxH", venue: "Outpost Artist Resources", city: "Ridgewood, NY", url: "", note: "With Lester St. Louis"},
     {date: "2024-04-18", title: "Joanna Mattrey: Battle Ready (Swoon)", venue: "Roulette Intermedium", city: "Brooklyn, NY", url: "https://roulette.org/event/joanna-mattrey-battle-ready/", note: "With Joanna Mattrey, gabby fluke-mogul, Patrick Shiroishi"},
     {date: "2024-04-17", title: "Swoon", venue: "2223 Fish", city: "Philadelphia, PA", url: "https://events.humanitix.com/chris-williams-gabby-fluke-mogul-joanna-mattrey-patrick-shiroishi-spectral-forces-and-zosha-warpeha", note: "Presented by Fire Museum Presents"},
     {date: "2024-04-16", title: "Odu: Vibration II (premiere)", venue: "Roulette Intermedium", city: "Brooklyn, NY", url: "https://roulette.org/event/chris-williams-odu-vibration-ii/", note: "With Kalia Vandever & Patrick Shiroishi"},
@@ -50,5 +62,6 @@ SITE.shows = [
     {date: "2024-01-13", title: "New Music Circle: solo set", venue: "The Luminary", city: "St. Louis, MO", url: "https://newmusiccircle.org/2023/07/26/lester-st-louis-solo-chris-williams-solo/", note: ""},
     {date: "2023-11-17", title: "Sonic Tonic Assembly: discussion & playback with HxH", venue: "Performa Hub", city: "New York, NY", url: "https://www.tickettailor.com/events/performa/1030703", note: "Performa 2023"},
     {date: "2023-11-16", title: "Sonic Tonic Assembly: HxH (Performa 2023)", venue: "Pioneer Works", city: "Brooklyn, NY", url: "https://pioneerworks.org/programs/sonic-tonic-assembly", note: ""},
-    {date: "2023-11-14", title: "Shara Lunon: Bitter Fruits", venue: "Roulette Intermedium", city: "Brooklyn, NY", url: "https://roulette.org/event/shara-lunon-bitter-fruits/", note: "With Shara Lunon, Lesley Mok, Kalia Vandever, Lester St. Louis, 13th Law"}
+    {date: "2023-11-14", title: "Shara Lunon: Bitter Fruits", venue: "Roulette Intermedium", city: "Brooklyn, NY", url: "https://roulette.org/event/shara-lunon-bitter-fruits/", note: "With Shara Lunon, Lesley Mok, Kalia Vandever, Lester St. Louis, 13th Law"},
+    {date: "2023-07-19", title: "HxH with Caleb Giles", venue: "Pioneer Works", city: "Brooklyn, NY", url: "", note: ""}
 ];
