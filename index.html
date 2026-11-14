@@ -207,7 +207,8 @@ footer{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-betw
 
   /* contact */
   if(SITE.email){$("mail").href="mailto:"+SITE.email;$("mail").textContent=SITE.email}
-  if(SITE.pressKit){$("kit").href=SITE.pressKit;$("kit").hidden=false}
+  var kitUrl=(SITE.pressKit===undefined)?"https://s.disco.ac/pvwjgkvdtvmt":SITE.pressKit;   // Press Kit link (set pressKit:"" in settings.js to hide)
+  if(kitUrl){$("kit").href=kitUrl;$("kit").hidden=false}
   $("links").innerHTML=(SITE.social||[]).map(function(s){return '<a href="'+h(s.url)+'" target="_blank" rel="noopener">'+h(s.label)+'</a>'}).join("");
 
   /* backdrop video: muted autoplay loop via the YouTube player API.
