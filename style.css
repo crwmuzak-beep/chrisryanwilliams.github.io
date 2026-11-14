@@ -15,7 +15,8 @@ h2{font:600 1.15rem Georgia,serif;margin:2.5rem 0 .8rem}
 .item:last-child{border-bottom:1px solid var(--line)}
 .meta{font:.82rem system-ui,sans-serif;color:var(--mute);letter-spacing:.03em}
 .show{display:grid;grid-template-columns:7.5rem 1fr;gap:1rem}
-.show .d{font:.85rem system-ui,sans-serif;color:var(--mute);padding-top:.2rem}
+.show .d{font:.85rem system-ui,sans-serif;color:var(--mute);padding-top:.2rem;opacity:.75}
+.show.up .d{color:var(--fg);font-weight:700;opacity:1}
 @media(max-width:560px){.show{grid-template-columns:1fr;gap:.1rem}}
 .embed{margin:1rem 0 .4rem}
 iframe{width:100%;border:0;display:block}

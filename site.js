@@ -24,7 +24,8 @@ function frame(page) {
 
 const R = {
   shows() {
-    const row = (s) => `<div class="item show"><div class="d">${fmtDate(s.date)}</div><div>
+    const today = new Date().toISOString().slice(0, 10);
+    const row = (s) => `<div class="item show${s.date >= today ? " up" : ""}"><div class="d">${fmtDate(s.date)}</div><div>
       <strong>${link(s.url, s.title)}</strong><br><span class="meta">${[s.venue, s.city].filter(Boolean).map(h).join(" · ")}</span>
       ${s.note ? `<div class="meta">${h(s.note)}</div>` : ""}</div></div>`;
     const all = SITE.shows.slice().sort((a, b) => b.date.localeCompare(a.date));

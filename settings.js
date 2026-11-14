@@ -3,7 +3,7 @@
 var SITE = window.SITE || {};
 Object.assign(SITE, {
   name: "Chris Ryan Williams",
-  email: "bookingscrw@gmail.com",        // <- booking email
+  email: "invitecrw@gmail.com",          // <- booking email
   photo: "photo.jpg",                    // <- landing-page photo (file sits next to index.html)
   photoCredit: "Photo: Beer Vanhoutte",  // "" to hide
   tagline: "Composer & performer. (Replace with one sentence about your music.)",

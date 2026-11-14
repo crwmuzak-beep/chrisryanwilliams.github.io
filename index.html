@@ -6,10 +6,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 /* ===== HOME (index.html) — one-page landing. Reads content/settings.js, shows.js, about.js =====
-   Video backdrop in black & grey, large name, three columns: about / shows / highlights. */
+   Video backdrop in full colour, large name, three columns: about / shows / highlights. */
 :root{
   --bg:#121212;                       /* charcoal behind everything */
-  --veil:rgba(14,14,14,.58);          /* <- darkness over the video: raise for calmer, lower to see more video */
+  --veil:rgba(14,14,14,.42);          /* <- darkness over the video: raise for calmer, lower to see more video */
   --fg:#ebe8e2; --mute:rgba(235,232,226,.62); --line:rgba(235,232,226,.28);
   --sans:"Space Grotesk",system-ui,sans-serif;
   --mono:"Space Mono",ui-monospace,Menlo,monospace;
@@ -28,7 +28,7 @@ a:hover{text-decoration-thickness:2px}
 .bg .thumb,.bg iframe{position:absolute;top:50%;left:50%;border:0;
   width:100vw;height:56.25vw;min-height:100vh;min-width:177.78vh;
   transform:translate(-50%,-50%) scale(1.15);          /* overscan hides YouTube edge UI */
-  filter:grayscale(1) contrast(1.05) brightness(.9)}
+  filter:saturate(1.1)}   /* full colour (version B) */
 .bg .thumb{background:center/cover no-repeat}
 /* render the player at 2x size, then shrink it: YouTube picks the stream quality from the player's
    pixel size, so a bigger player asks for 1080p+ instead of 480/720p */
@@ -67,6 +67,10 @@ h2 i{font-style:normal;color:var(--fg);margin-right:.8em}
 .shows .t a{text-decoration:none}
 .shows .t a:hover{text-decoration:underline}
 .shows .v{grid-column:2;font-size:.92rem;color:var(--mute)}
+.shows .more{display:none}
+.shows.open .more{display:block}
+.shows li.up .date{color:var(--fg);font-weight:700}
+.shows li:not(.up) .date{opacity:.75}
 .all{display:inline-block;margin-top:1.1rem;font:400 .74rem var(--mono);letter-spacing:.12em;text-transform:uppercase}
 
 /* highlights */
@@ -111,7 +115,7 @@ footer{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-betw
 
 <main class="grid">
   <section aria-labelledby="ah"><h2 id="ah"><i>01</i>Who</h2><div class="bio" id="bio"></div></section>
-  <section class="shows" aria-labelledby="sh"><h2><i>02</i><span id="sh">Shows</span></h2><ol id="shows"></ol><a class="all" href="shows.html">All shows →</a></section>
+  <section class="shows" id="showsWrap" aria-labelledby="sh"><h2><i>02</i><span id="sh">Performances</span></h2><ol id="shows"></ol><ol class="more" id="showsMore"></ol><button class="toggle" id="moreShows" type="button" aria-expanded="false">More performances</button></section>
   <section class="hl" aria-labelledby="hh"><h2 id="hh"><i>03</i>News</h2><ul id="hl"></ul></section>
 </main>
 
@@ -126,7 +130,7 @@ footer{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-betw
 <script src="about.js"></script>
 <script>
 (function(){
-  var SITE=window.SITE||{}, VIDEO="EijmXJMXypU";   // <- YouTube ID of the backdrop video
+  var SITE=window.SITE||{}, VIDEO="NZm5XphwuxA";   // <- YouTube ID of the backdrop video
   var h=function(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})};
   var $=function(id){return document.getElementById(id)};
 
@@ -143,19 +147,25 @@ footer{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-betw
   var tg=$("bio").querySelector(".toggle");
   if(tg) tg.onclick=function(){var o=$("bio").classList.toggle("open");tg.textContent=o?"Less":"Read more";tg.setAttribute("aria-expanded",o)};
 
-  /* shows: upcoming first; if none, the most recent ones */
+  /* performances: upcoming (soonest first, bold dates) then past (newest first, faded dates).
+     First 6 show; the rest open with "More performances" — like Read more in Who. */
   var today=new Date(); today.setHours(0,0,0,0);
-  var all=(SITE.shows||[]).slice().sort(function(a,b){return a.date<b.date?1:-1});
   var d=function(s){var p=s.date.split("-");return new Date(+p[0],p[1]-1,+p[2])};
-  var up=all.filter(function(s){return d(s)>=today}).reverse();
-  var list=up.length?up.slice(0,6):all.slice(0,6);
-  $("sh").textContent="Performances";
+  var shows=(SITE.shows||[]).slice();
+  var up=shows.filter(function(s){return d(s)>=today}).sort(function(a,b){return a.date<b.date?-1:1});
+  var past=shows.filter(function(s){return d(s)<today}).sort(function(a,b){return a.date<b.date?1:-1});
+  var all=up.concat(past), SHOW=6;
   var M=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-  $("shows").innerHTML=list.map(function(s){
-    var dt=d(s), badge=M[dt.getMonth()]+" "+dt.getDate()+(dt.getFullYear()!==today.getFullYear()?" ’"+String(dt.getFullYear()).slice(2):"");
+  var row=function(s){
+    var dt=d(s), isUp=dt>=today, badge=M[dt.getMonth()]+" "+dt.getDate()+(dt.getFullYear()!==today.getFullYear()?" ’"+String(dt.getFullYear()).slice(2):"");
     var t=h(s.title); if(s.url) t='<a href="'+h(s.url)+'" target="_blank" rel="noopener">'+t+'</a>';
-    return '<li><span class="date">'+badge+'</span><div class="t">'+t+'</div><span class="v">'+h([s.venue,s.city].filter(Boolean).join(", "))+'</span></li>';
-  }).join("");
+    return '<li'+(isUp?' class="up"':'')+'><span class="date">'+badge+'</span><div class="t">'+t+'</div><span class="v">'+h([s.venue,s.city].filter(Boolean).join(", "))+'</span></li>';
+  };
+  $("shows").innerHTML=all.slice(0,SHOW).map(row).join("");
+  $("showsMore").innerHTML=all.slice(SHOW).map(row).join("");
+  var mb=$("moreShows");
+  if(all.length<=SHOW) mb.remove();
+  else mb.onclick=function(){var o=$("showsWrap").classList.toggle("open");mb.textContent=o?"Fewer":"More performances";mb.setAttribute("aria-expanded",o)};
 
   /* highlights: "Label: a; b" and "Title (Label, Year): note" → underlined head + small line */
   $("hl").innerHTML=(SITE.accomplishments||[]).map(function(x){
