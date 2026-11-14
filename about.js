@@ -1,6 +1,6 @@
 /* ===== ABOUT PAGE (about.html) ===== */
 SITE.about = [   // each string = one paragraph
-  "Chris Ryan Williams is an artist and musician based in Brooklyn, NY, whose work unfolds through electroacoustic composition and performance installation. He is currently the inaugural candidate for the Artist Diploma at New England Conservatory.",
+  "Chris Ryan Williams is an artist and musician based in Brooklyn, NY, whose work unfolds through electroacoustic composition and performance installation. He is currently the Inaugural Contemporary Music Candidate for the Artist Diploma at New England Conservatory.",
 
   "His debut LP, Odu: Vibration II, reimagines a journey through Plato’s Cave. It was praised by Pitchfork and named one of NPR’s Best New Albums. His EP Live drew acclaim from Jazz Right Now and The Quietus, where Peter Margasak described its “dazzling collaged pieces that ricochet between improvised passages and written material.”",
 
@@ -19,7 +19,7 @@ SITE.accomplishments = [   // "News" on the home page + "Selected highlights" on
   {text: "STARK PHENOMENA (OFNOT, 2025): HxH, with cellist Lester St. Louis",
    url: "https://hxhexpanse.bandcamp.com/album/stark-phenomena"},
   "Presented at the Venice Biennale, MoMA PS1, Carnegie Hall, Walt Disney Concert Hall, and The Royal Danish Playhouse",
-  {text: "Inaugural Artist Diploma candidate, New England Conservatory",
+  {text: "Inaugural Contemporary Music Candidate for the Artist Diploma at New England Conservatory",
    url: "https://necmusic.edu/about/news/necs-prestigious-institute-for-concert-artists-welcomes-new-class/"},
   "Commissions: International Contemporary Ensemble; American Composers Forum (ACF CREATE, Jerome Foundation Fund, 2023); MATA Festival (2022); Pan Afrikan Peoples Arkestra; WasteLAnd",
   "Residencies: Bemis Center for Contemporary Arts (2025); Pioneer Works (2023); Kennedy Center, The REACH, with FoundSoundNation (2022); Goethe-Institut, virtual partner (2021)",
